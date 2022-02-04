@@ -1,0 +1,44 @@
+Component button
+
+<lightning:button variant="destructive-text" label="Manual" title="Submit Manual Pricing" onclick="{! c.Manual}"/>
+
+
+
+
+
+Controller:
+
+//Sets the button for MANUAL
+    Manual : function (component, event, helper) {
+        var action = component.get("c.updateSRMStatus");
+        action.setParams({
+            "Need_Special_Pricing2__c": 'Yes'
+        });
+
+         //Calls the auto pricing and updates status and then displays the toast
+        helper.SubmitPricingAPI(component, event, helper);
+        
+     },
+
+
+
+
+
+
+Apex:
+
+@AuraEnabled  
+    Public Static void updateSRMStatus(String PrId, String NewStatus)  {
+        Pricing_Request__c updatePricingReq= 
+            [SELECT Need_Special_Pricing2__c,time_submitted__c ,Id FROM Pricing_Request__c 
+             WHERE Id =:PrId
+             LIMIT 1];
+        
+        updatePricingReq.time_submitted__c=datetime.now();    
+        updatePricingReq.Need_Special_Pricing2__c = NewStatus;
+        update updatePricingReq; 
+    }
+    
+    
+    
+    
