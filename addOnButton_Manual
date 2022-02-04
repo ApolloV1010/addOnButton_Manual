@@ -8,19 +8,20 @@ Component button
 
 Controller:
 
-//Sets the button for MANUAL
+///Sets the button for MANUAL
     Manual : function (component, event, helper) {
+        var PrId = component.get("v.recordId");
         var action = component.get("c.updateSRMStatus");
         action.setParams({
-            "Need_Special_Pricing2__c": 'Yes'
+          "PrId":PrId,
+          "NewStatus":'Yes',
         });
-
-         //Calls the auto pricing and updates status and then displays the toast
-        helper.SubmitPricingAPI(component, event, helper);
         
-     },
-
-
+        
+        //Calls the auto pricing and updates status and then displays the toast
+        helper.SubmitPricingAPI(component, event, helper);
+    },
+    
 
 
 
